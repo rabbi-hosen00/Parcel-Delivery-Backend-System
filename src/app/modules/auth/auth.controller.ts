@@ -16,7 +16,7 @@ const credeentialLogin = catchAsync(async (req: Request, res: Response, next: Ne
 
     sendResponse(res, {
         success : true,
-        statuCode: httpStatus.CREATED,
+        statusCode: httpStatus.CREATED,
         message : "User Login successfully",
         data: loginInfo,
     })
@@ -41,7 +41,7 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
 
     sendResponse(res, {
         success : true,
-        statuCode: httpStatus.CREATED,
+        statusCode: httpStatus.CREATED,
         message : "New Access Token Retrived successfully",
         data: tokenInfo,
     })
@@ -54,11 +54,44 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
 const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
    
 
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+
+
     sendResponse(res, {
         success : true,
-        statuCode: httpStatus.CREATED,
-        message : "User Login successfully",
-        data: tokenInfo,
+        statusCode: httpStatus.CREATED,
+        message : "User Logged out successfully",
+        data: null,
+    })
+
+    
+})
+
+
+const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+   
+    
+    const newPassword = req.body.newPassword;
+    const oldPassword = req.body.oldPassword;
+    const decodedToken = req.user;
+
+     await AuthServices.resetPassword(oldPassword, newPassword,decodedToken)
+
+
+    sendResponse(res, {
+        success : true,
+        statusCode: httpStatus.CREATED,
+        message : "Password Changed Successfully",
+        data: null,
     })
 
     
@@ -67,4 +100,6 @@ const logout = catchAsync(async (req: Request, res: Response, next: NextFunction
 export const AuthControllers = {
     credeentialLogin,
     getNewAccessToken,
+    logout,
+    resetPassword
 }

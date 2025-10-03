@@ -10,7 +10,7 @@ import { envVars } from '../../config/env';
 
 
 const createUserService = async (payload: Partial<IUser>) => {
-    const { email, password, ...rest } = payload;
+    const { email, password, role, ...rest } = payload;
 
     const isUserExist = await User.findOne({ email })
 
@@ -25,10 +25,10 @@ const createUserService = async (payload: Partial<IUser>) => {
         email,
         password: hashedPassword,
         auths: [authProvider],
+         role: role || Role.SENDER,
         ...rest
     })
     return user
-
 
 }
 

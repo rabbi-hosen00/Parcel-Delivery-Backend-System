@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 import { IAuthProvider, IUser, Role } from "./user.interface";
 
 
@@ -46,24 +46,29 @@ const userSchema = new Schema<IUser>({
         type: Boolean,
         default: false,
     },
+    isActive: {
+        type: Boolean,
+        default: false,
+    },
     role: {
         type: String,
         enum: Object.values(Role),
-        default: Role.SENDER
+        default: Role.SENDER,
+        
     },
     auths: [authProviderSchema],
-    // sentParcels: [
-    //     {
-    //         type: Types.ObjectId,
-    //         ref: "Parcel",
-    //     },
-    // ],
-    // receivedParcels: [
-    //     {
-    //         type: Types.ObjectId,
-    //         ref: "Parcel",
-    //     },
-    // ],
+    sentParcels: [
+        {
+            type: Types.ObjectId,
+            ref: "Parcel",
+        },
+    ],
+    receivedParcels: [
+        {
+            type: Types.ObjectId,
+            ref: "Parcel",
+        },
+    ],
 },
     {
         timestamps: true,

@@ -20,9 +20,10 @@ const createUser = catchAsync(async (req: Request, res: Response, next: NextFunc
 
     const user = await UserService.createUserService(req.body)
 
+    
     sendResponse(res, {
         success : true,
-        statuCode: httpStatus.CREATED,
+        statusCode: httpStatus.CREATED,
         message : "User created successfully",
         data: user,
     })
@@ -48,7 +49,7 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
 
     sendResponse(res, {
         success : true,
-        statuCode: httpStatus.CREATED,
+        statusCode: httpStatus.CREATED,
         message : "User Updated successfully",
         data: user,
     })
@@ -73,7 +74,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
 
     sendResponse(res, {
         success : true,
-        statuCode: httpStatus.CREATED,
+        statusCode: httpStatus.CREATED,
         message : "All Users Retrieved Successfully",
         data: result.data,
         meta: result.meta

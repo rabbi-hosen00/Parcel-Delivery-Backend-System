@@ -21,8 +21,8 @@ export interface IUser {
     address?: string;
     picture?: string;
     isBlocked?: boolean; 
-    // isActive?: string;
-    role: Role; 
+    isActive?: boolean;
+    role?: Role; 
     auths?: IAuthProvider[];
     sentParcels?: Types.ObjectId[];   // IDs of parcels created (for sender)
     receivedParcels ?: Types.ObjectId[]; // IDs of parcels to be received (for receiver)
