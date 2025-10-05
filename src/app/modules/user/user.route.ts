@@ -15,11 +15,11 @@ const router = Router()
 
 
 
-router.post("/register",validateRequest(createUserZodSchema),UserControllers.createUser)
+router.post("/register", validateRequest(createUserZodSchema), UserControllers.createUser)
 router.get("/all-users", checkAuth(Role.ADMIN), UserControllers.getAllUsers)
 router.patch("/:id", validateRequest(updateUserZodSchema), checkAuth(...Object.values(Role)), UserControllers.updateUser)
-router.patch("/block/:id", checkAuth(Role.ADMIN), UserControllers.blockUser)
-router.patch("/unblock/:id", checkAuth(Role.ADMIN), UserControllers.unblockUser);
+router.patch("/:userId/block", checkAuth(Role.ADMIN), UserControllers.blockUser)
+router.patch("/:userId/unblock", checkAuth(Role.ADMIN), UserControllers.unblockUser);
 
 
 

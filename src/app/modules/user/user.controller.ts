@@ -70,7 +70,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const blockUser = catchAsync(async (req: Request, res: Response) => {
 
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const user = await UserService.blockUser(userId)
 
     sendResponse(res, {
@@ -85,7 +85,7 @@ const blockUser = catchAsync(async (req: Request, res: Response) => {
 
 const unblockUser = catchAsync(async(req: Request, res: Response) =>{
       
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const user = await UserService.unblockUser(userId)
 
      sendResponse(res,{

@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IParcel, ParcelStatus } from "./percel.interface";
-import { StatusLogs } from "../statusLogs/statusLogs.model";
+
 
 
 
@@ -48,17 +48,6 @@ ParcelSchema.index({ sender: 1, status: 1, createdAt: -1 });
 
 
 
-ParcelSchema.post("save", async function(doc){
-  if(doc.isModified("status") && doc.status === ParcelStatus.CANCELLED){
-     const parcel =  await StatusLogs.create({
-       status: ParcelStatus.CANCELLED,
-      location: doc.pickupAddress,
-      note: "Parcel cancelled ",
-      updatedBy: doc.sender
-    })
-    await parcel.save();
-  }
-})
 
 
 

@@ -10,39 +10,13 @@ import { ParcelController } from './percel.controller';
 
 const router = Router();
 
-router.post(
-    "/",
-    checkAuth(Role.SENDER),
-    validateRequest(createParcelZodSchema),
-    ParcelController.createPercel
-)
-
-router.get(
-    "/",
-    checkAuth(Role.ADMIN),
-    ParcelController.getAllParcel
-)
+router.post("/",checkAuth(Role.SENDER),validateRequest(createParcelZodSchema),ParcelController.createPercel)
+router.get("/",checkAuth(Role.ADMIN),ParcelController.getAllParcel)
+router.get("/me",checkAuth(Role.SENDER),ParcelController.getMyParcelByEmail)
+router.patch("/cancel/:id",checkAuth(Role.SENDER,Role.ADMIN),ParcelController.cancelMyParcel)
+router.patch("/:id/status",checkAuth(Role.ADMIN),ParcelController.updateParcelStatus)
 
 
-router.get(
-    "/me",
-    checkAuth(Role.SENDER),
-    ParcelController.getMyParcelByEmail
-)
-
-
-
-router.patch(
-    "/:id",
-    checkAuth(Role.SENDER),
-    ParcelController.cancelMyParcel
-)
-
-
-router.get(
-    "/incoming",
-    checkAuth(Role.RECEIVER)
-)
 
 
 

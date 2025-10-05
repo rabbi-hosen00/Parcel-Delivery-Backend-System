@@ -11,7 +11,8 @@ export enum ParcelStatus {
   DELIVERED = "DELIVERED",
   CANCELLED = "CANCELLED",
   RETURNED = "RETURNED",
-  HELD = "HELD"
+  HELD = "HELD",
+  BLOCKED= "BLOCKED"
 }
 
 
@@ -34,6 +35,7 @@ export interface IParcel {
   isFlagged?: boolean;
   isBlocked?: boolean;
 }
+
 
 
 

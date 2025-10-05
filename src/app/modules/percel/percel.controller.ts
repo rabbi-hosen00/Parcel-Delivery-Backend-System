@@ -101,6 +101,26 @@ const cancelMyParcel = catchAsync(async (req: Request, res: Response) => {
 
 
 
+const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+    const { newStatus, location } = req.body;
+    const adminId = req.user._id;
+
+    const result= await ParcelService.updateParcelStatus(id, newStatus, location, adminId)
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message:  result.message,
+        data: result
+    });
+
+
+})
+
+
+
 
 
 
@@ -108,6 +128,7 @@ export const ParcelController = {
     createPercel,
     getMyParcelByEmail,
     cancelMyParcel,
-    getAllParcel
+    getAllParcel,
+    updateParcelStatus
 }
 
