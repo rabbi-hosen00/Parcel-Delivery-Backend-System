@@ -84,7 +84,7 @@ const getMyParcelByEmail = catchAsync(async (req: Request, res: Response, next: 
 
 const cancelMyParcel = catchAsync(async (req: Request, res: Response) => {
 
-    const parcelId = req.params.id;
+    const parcelId = req.params.parcelId;
     const senderId = req.user._id;
 
     const updateParcel = await ParcelService.cancelParcel(parcelId, senderId)
@@ -103,11 +103,11 @@ const cancelMyParcel = catchAsync(async (req: Request, res: Response) => {
 
 const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
 
-    const { id } = req.params;
-    const { newStatus, location } = req.body;
+    const { parcelId } = req.params;
+    const { status, location } = req.body;
     const adminId = req.user._id;
 
-    const result= await ParcelService.updateParcelStatus(id, newStatus, location, adminId)
+    const result= await ParcelService.updateParcelStatus(parcelId, status, location, adminId)
 
     sendResponse(res, {
         statusCode: 200,
