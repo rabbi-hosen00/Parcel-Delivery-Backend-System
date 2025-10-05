@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status-codes';
 import AppError from "../../errorHelpers/appError";
@@ -105,38 +106,6 @@ const getMyParcelByEmail = async (email: string) => {
 
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-// const cancelParcel = async (parcelId: string, senderId: any) => {
-//     const parcel = await Parcel.findById(parcelId)
-//         .populate("statusLogs")
-
-//     if (!parcel) {
-//         throw new Error("Parcel not found");
-//     }
-
-//     if (parcel.sender.equals(senderId)) {
-//         throw new Error("You are not authorized to cancel this parcel");
-//     }
-
-//     const forbiddenStatus = [
-//         ParcelStatus.DISPATCHED,
-//         ParcelStatus.IN_TRANSIT,
-//         ParcelStatus.OUT_FOR_DELIVERY,
-//         ParcelStatus.DELIVERED
-//     ];
-
-//     if (forbiddenStatus.includes(parcel.status)) {
-//         throw new Error("Parcel cannot be cancelled as it has already been dispatched");
-//     }
-
-//     parcel.status = ParcelStatus.CANCELLED || ParcelStatus.BLOCKED;
-
-//     // await parcel.save();
-//     return parcel
-
-// }
-
 
 export const cancelParcel = async (parcelId: string, senderId: string) => {
     // Step 1: Find parcel
@@ -184,19 +153,19 @@ export const cancelParcel = async (parcelId: string, senderId: string) => {
 };
 
 
+
 const updateParcelStatus = async (parcelId: string, newStatus: ParcelStatus, location: string, adminId: string) => {
   const parcel = await Parcel.findById(parcelId);
   if (!parcel) throw new Error("Parcel not found");
 
-  // পুরানো status যদি একই থাকে
   if (parcel.status === newStatus) {
     throw new Error(`Parcel is already in status: ${newStatus}`);
   }
 
-  // Step 1️⃣: Parcel status update
+
   parcel.status = newStatus;
 
-  // Step 2️⃣: নতুন status log তৈরি
+
   const newStatusLog = await StatusLogs.create({
     status: newStatus,
     location: location,
@@ -204,7 +173,6 @@ const updateParcelStatus = async (parcelId: string, newStatus: ParcelStatus, loc
     updatedBy: adminId,
   });
 
-  // Step 3️⃣: Log push করা parcel এ
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   parcel.statusLogs!.push(newStatusLog._id);
 
@@ -219,6 +187,26 @@ const updateParcelStatus = async (parcelId: string, newStatus: ParcelStatus, loc
 };
 
 
+const getParcelStatusLogs = async (parcelId: string) => {
+  
+  const parcel = await Parcel.findById(parcelId)
+    .populate({
+      path: "statusLogs",
+      select: "status note location updatedBy createdAt -_id", // শুধু দরকারি ফিল্ড দেখাবে
+      populate: {
+        path: "updatedBy",
+        select: "name role", 
+      },
+    })
+    .select("trackingId status statusLogs");
+
+
+  return {
+    trackingId: parcel!.trackingId,
+    currentStatus: parcel!.status,
+    statusLogs: parcel!.statusLogs,
+  };
+};
 
 
 
@@ -230,7 +218,8 @@ export const ParcelService = {
     getMyParcelByEmail,
     cancelParcel,
     getAllParcel,
-    updateParcelStatus
+    updateParcelStatus,
+    getParcelStatusLogs
 }
 
 

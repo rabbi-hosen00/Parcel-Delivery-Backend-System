@@ -102,7 +102,6 @@ const cancelMyParcel = catchAsync(async (req: Request, res: Response) => {
 
 
 const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
-
     const { parcelId } = req.params;
     const { status, location } = req.body;
     const adminId = req.user._id;
@@ -115,9 +114,23 @@ const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
         message:  result.message,
         data: result
     });
-
-
 })
+
+
+const  getParcelStatusLogs = catchAsync(async (req: Request, res: Response) => {
+    const { parcelId } = req.params;
+  
+    const result= await ParcelService.getParcelStatusLogs(parcelId)
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Parcel status log fetched successfully",
+        data: result
+    });
+})
+
+
 
 
 
@@ -129,6 +142,7 @@ export const ParcelController = {
     getMyParcelByEmail,
     cancelMyParcel,
     getAllParcel,
-    updateParcelStatus
+    updateParcelStatus,
+    getParcelStatusLogs
 }
 
