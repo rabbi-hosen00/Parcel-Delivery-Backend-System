@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IParcel, ParcelStatus } from "./percel.interface";
-
+import { StatusLogs } from "../statusLogs/statusLogs.model";
 
 
 
@@ -12,6 +12,7 @@ const ParcelSchema = new Schema({
   },
   type: String,
   weight: Number,
+  quantity: Number,
   fee: Number,
   sender: {
     type: Schema.Types.ObjectId,
@@ -31,7 +32,7 @@ const ParcelSchema = new Schema({
   statusLogs: [{
     type: Schema.Types.ObjectId,
     ref: "StatusLogs",
-    required: true
+    // required: true
   }],
   isFlagged: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
@@ -44,5 +45,24 @@ const ParcelSchema = new Schema({
 // Compound index example: find parcels of a sender by status quickly
 ParcelSchema.index({ sender: 1, status: 1, createdAt: -1 });
 
+
+
+
+ParcelSchema.post("save", async function(doc){
+  if(doc.isModified("status") && doc.status === ParcelStatus.CANCELLED){
+     const parcel =  await StatusLogs.create({
+       status: ParcelStatus.CANCELLED,
+      location: doc.pickupAddress,
+      note: "Parcel cancelled ",
+      updatedBy: doc.sender
+    })
+    await parcel.save();
+  }
+})
+
+
+
 export const Parcel = model<IParcel>("Parcel", ParcelSchema)
+
+
 

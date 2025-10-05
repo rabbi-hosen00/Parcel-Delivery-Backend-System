@@ -25,7 +25,7 @@ const createUserService = async (payload: Partial<IUser>) => {
         email,
         password: hashedPassword,
         auths: [authProvider],
-         role: role || Role.SENDER,
+        role: role || Role.SENDER,
         ...rest
     })
     return user
@@ -34,9 +34,9 @@ const createUserService = async (payload: Partial<IUser>) => {
 
 
 const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
-     const ifUserExist = await User.findById(userId);
+    const ifUserExist = await User.findById(userId);
 
-     if (!ifUserExist) {
+    if (!ifUserExist) {
         throw new AppError(httpStatus.NOT_FOUND, "User Not Found")
     }
 
@@ -89,8 +89,42 @@ const getAllUsers = async () => {
 }
 
 
+const blockUser = async (userId: string) => {
+    const user = await User.findById(userId)
+
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    }
+
+    user.isBlocked = true;
+    await user.save();
+
+    return user
+
+}
+
+
+const unblockUser = async(userId : string) =>{
+    const isExistUser = await User.findById(userId);
+
+    if(!isExistUser){
+        throw new AppError(httpStatus.NOT_FOUND, "User not found")
+    }
+
+    isExistUser.isBlocked = false;
+    isExistUser.save()
+
+    return isExistUser;
+
+}
+
+
+
+
 export const UserService = {
     createUserService,
     getAllUsers,
-    updateUser
+    updateUser,
+    blockUser,
+    unblockUser
 }

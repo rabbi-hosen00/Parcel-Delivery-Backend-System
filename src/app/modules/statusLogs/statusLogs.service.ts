@@ -1,13 +1,16 @@
-import { IStatusLogs } from "./statusLogs.interface";
+
 import { StatusLogs } from "./statusLogs.model";
 
 
 
-const createStatusLogs = async(payload:IStatusLogs) =>{
-    const statusLogs = await StatusLogs.create(payload)
-    return statusLogs
+// const createStatusLogs = async(payload:IStatusLogs) =>{
+ 
+ 
+ 
+//     const statusLogs = await StatusLogs.create(payload)
+//     return statusLogs
 
-}
+// }
 
 
 const getAllStatus = async()=>{
@@ -37,7 +40,7 @@ const getSingleStatusLog = async(statusId : string) =>{
 
 
 export const statusLogservice ={
-    createStatusLogs,
+    // createStatusLogs,
     getAllStatus,
     getSingleStatusLog
 }

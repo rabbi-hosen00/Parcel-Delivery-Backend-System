@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status-codes';
-import { NextFunction, Request, Response } from "express"
-import { catchAsync } from "../../utils/catchAsync"
-import { sendResponse } from "../../utils/sendResponse";
+import {  Request, Response } from "express"
 import { statusLogservice } from './statusLogs.service';
 
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const createStatusLogs = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+// const createStatusLogs = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const result = await statusLogservice.createStatusLogs(req.body)
+//     const result = await statusLogservice.createStatusLogs(req.body)
 
-    sendResponse(res, {
-        statusCode: httpStatus.CREATED,
-        success: true,
-        message: "StatusLogs Created Successfully",
-        data: result
-    })
-})
+//     sendResponse(res, {
+//         statusCode: httpStatus.CREATED,
+//         success: true,
+//         message: "StatusLogs Created Successfully",
+//         data: result
+//     })
+// })
 
 
 
@@ -79,7 +77,7 @@ export const getSingleStatusLog = async (req: Request, res: Response) => {
 
 
 export const StatusLogsController = {
-    createStatusLogs,
+    // createStatusLogs,
     getAllStatus,
     getSingleStatusLog
 }

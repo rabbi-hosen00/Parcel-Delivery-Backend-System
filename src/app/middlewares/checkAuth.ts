@@ -9,6 +9,7 @@ import { User } from '../modules/user/user.model';
 
 
 
+
 export const checkAuth = (...authRoles: string[]) => async (req: Request, res: Response, next: NextFunction) => {
     {
 
@@ -28,8 +29,12 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
                 throw new AppError(httpStatus.BAD_REQUEST, "Email doesn't exist!!")
             }
 
+            const targetUserId = req.params.id; // শুধু param থেকে
+            if (targetUserId && isUserExist.role === "ADMIN" && isUserExist._id.toString() === targetUserId) {
+                throw new AppError(httpStatus.FORBIDDEN, "Admin cannot block/unblock themselves");
+            }
             if (isUserExist.isBlocked) {
-                throw new AppError(httpStatus.BAD_REQUEST, "user is blocked!!")
+                throw new AppError(httpStatus.BAD_REQUEST, "User is blocked. Please contact the admin!!")
             }
 
             if (!authRoles.includes(verifiedToken.role)) {
@@ -44,3 +49,5 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
 
     }
 }
+
+

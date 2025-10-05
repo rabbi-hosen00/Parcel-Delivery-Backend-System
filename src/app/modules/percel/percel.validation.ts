@@ -10,6 +10,7 @@ export const createParcelZodSchema = z.object({
   trackingId: z.string().min(1, "trackingId is required").optional(), // e.g., TRK-YYYYMMDD-xxxxxx
   type: z.string().optional(),                            // documents, parcel
   weight: z.number().positive("Weight must be positive").optional(),
+  quantity: z.number().positive("Quantity must be positive").optional(),
   fee: z.number().nonnegative("Fee must be >= 0").optional(),
 
   sender: z.string().min(1, "Sender ObjectId is required"), // later you can refine for ObjectId

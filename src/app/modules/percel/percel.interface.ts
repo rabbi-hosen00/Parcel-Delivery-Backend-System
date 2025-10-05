@@ -16,18 +16,21 @@ export enum ParcelStatus {
 
 
 
+
+
 export interface IParcel {
   _id?: Types.ObjectId;
   trackingId: string;     // TRK-YYYYMMDD-xxxxxx
   type?: string;          // e.g., documents, parcel
-  weight?: number;        // kg
+  weight?: number;
+  quantity: number;       
   fee?: number;
   sender: Types.ObjectId;   // ref User
   receiver: Types.ObjectId;    // optional ref if receiver has account
   pickupAddress: string;
   deliveryAddress: string;
   status: ParcelStatus;
-  statusLogs: Types.ObjectId; // embedded
+  statusLogs?: Types.ObjectId[]; // embedded
   isFlagged?: boolean;
   isBlocked?: boolean;
 }

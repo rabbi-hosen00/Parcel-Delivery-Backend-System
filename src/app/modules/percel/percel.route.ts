@@ -17,6 +17,32 @@ router.post(
     ParcelController.createPercel
 )
 
+router.get(
+    "/",
+    checkAuth(Role.ADMIN),
+    ParcelController.getAllParcel
+)
+
+
+router.get(
+    "/me",
+    checkAuth(Role.SENDER),
+    ParcelController.getMyParcelByEmail
+)
+
+
+
+router.patch(
+    "/:id",
+    checkAuth(Role.SENDER),
+    ParcelController.cancelMyParcel
+)
+
+
+router.get(
+    "/incoming",
+    checkAuth(Role.RECEIVER)
+)
 
 
 
