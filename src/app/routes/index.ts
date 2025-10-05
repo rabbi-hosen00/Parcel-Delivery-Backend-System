@@ -1,7 +1,6 @@
 import { Router } from "express"
 import { UserRoutes } from "../modules/user/user.route"
 import { AuthRoutes } from "../modules/auth/auth.route"
-import { StatusLogsRoutes } from "../modules/statusLogs/statusLogs.route"
 import { ParcelRoutes } from "../modules/percel/percel.route"
 
 export const router = Router()
@@ -14,10 +13,6 @@ export const router = Router()
     {
         path: "/auth",
         route: AuthRoutes
-    },
-    {
-        path: "/StatusLogs",
-        route: StatusLogsRoutes
     },
     {
         path: "/parcels",

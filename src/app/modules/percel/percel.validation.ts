@@ -8,6 +8,7 @@ import { StatusLogsZodSchema } from "../statusLogs/statusLogs.validation";
 
 export const createParcelZodSchema = z.object({
   trackingId: z.string().min(1, "trackingId is required").optional(), // e.g., TRK-YYYYMMDD-xxxxxx
+  name: z.string(),
   type: z.string().optional(),                            // documents, parcel
   weight: z.number().positive("Weight must be positive").optional(),
   quantity: z.number().positive("Quantity must be positive").optional(),
@@ -23,9 +24,9 @@ export const createParcelZodSchema = z.object({
     .enum(Object.values(ParcelStatus) as [string, ...string[]])
     .default(ParcelStatus.REQUESTED),
 
-   statusLogs: z
-  .union([z.string().min(1), z.array(z.string().min(1))])
-  .optional(),// here you can replace z.any() with StatusLogsZodSchema later
+  statusLogs: z
+    .union([z.string().min(1), z.array(z.string().min(1))])
+    .optional(),// here you can replace z.any() with StatusLogsZodSchema later
 
   isFlagged: z.boolean().optional(),
   isDeleted: z.boolean().optional(),

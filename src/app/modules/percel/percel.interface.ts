@@ -22,6 +22,7 @@ export enum ParcelStatus {
 export interface IParcel {
   _id?: Types.ObjectId;
   trackingId: string;     // TRK-YYYYMMDD-xxxxxx
+  name: string;
   type?: string;          // e.g., documents, parcel
   weight?: number;
   quantity: number;       

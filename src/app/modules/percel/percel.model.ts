@@ -10,6 +10,7 @@ const ParcelSchema = new Schema({
     unique: true,
     index: true
   },
+  name:String,
   type: String,
   weight: Number,
   quantity: Number,
