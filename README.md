@@ -158,7 +158,124 @@ Content-Type: application/json
   "password": "Password123!"
 }
 ````
+## Response
+````
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "user": {
+      "_id": "68e15ff7f1b8eadaa0dee375",
+      "name": "John Doe",
+      "role": "sender",
+      "email": "user@example.com"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}
+````
 
+3️⃣ Sender Route: Create Parcel
+Request:
+````
+POST /api/v1/parcels
+Authorization: Bearer <JWT_TOKEN>
+Content-Type: application/json
+
+{
+  "receiverName": "Jane Doe",
+  "receiverAddress": "123 Receiver Rd, Dhaka",
+  "weight": 2.5,
+  "note": "Handle with care"
+}
+````
+## Response:
+````
+{
+  "success": true,
+  "message": "Parcel created successfully",
+  "data": {
+    "_id": "68e1604df1b8eadaa0dee37a",
+    "trackingId": "TRK-20251004-785050",
+    "status": "PENDING",
+    "sender": "68e15ff7f1b8eadaa0dee375",
+    "receiverName": "Jane Doe",
+    "receiverAddress": "123 Receiver Rd, Dhaka",
+    "weight": 2.5,
+    "note": "Handle with care",
+    "statusLog": []
+  }
+}
+````
+4️⃣ Receiver Route: Confirm Parcel Delivery
+Request:
+
+````
+PATCH /api/v1/parcels/68e1604df1b8eadaa0dee37a/confirm
+Authorization: Bearer <JWT_TOKEN>
+````
+## Response:
+
+````
+{
+  "success": true,
+  "message": "Parcel delivery confirmed successfully",
+  "data": {
+    "trackingId": "TRK-20251004-785050",
+    "status": "DELIVERED",
+    "lastStatusLog": {
+      "_id": "68e16123456f1b8eadaa0dee99",
+      "status": "DELIVERED",
+      "note": "Receiver confirmed delivery",
+      "location": "456 Receiver Rd, Chittagong",
+      "updatedBy": "68e15ff7f1b8eadaa0dee375",
+      "createdAt": "2025-10-06T04:15:12.345Z"
+    }
+  }
+}
+````
+
+5️⃣ Admin Route: View All Parcels
+Request:
+
+````
+GET /api/v1/parcels
+Authorization: Bearer <JWT_TOKEN>
+````
+## Response:
+````
+{
+  "success": true,
+  "message": "All parcels fetched successfully",
+  "data": [
+    {
+      "_id": "68e1604df1b8eadaa0dee37a",
+      "trackingId": "TRK-20251004-785050",
+      "status": "DELIVERED",
+      "sender": "68e15ff7f1b8eadaa0dee375",
+      "receiverName": "Jane Doe",
+      "receiverAddress": "123 Receiver Rd, Dhaka"
+    }
+  ]
+}
+````
+6️⃣ Admin Route: Block / Unblock User or Parcel
+Request:
+````
+PATCH /api/v1/admin/block/68e1604df1b8eadaa0dee37a
+Authorization: Bearer <JWT_TOKEN>
+````
+## Response:
+````
+{
+  "success": true,
+  "message": "Parcel/User status updated successfully",
+  "data": {
+    "_id": "68e1604df1b8eadaa0dee37a",
+    "status": "BLOCKED"
+  }
+}
+````
 
 ## 🧪 Testing
 
