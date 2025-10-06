@@ -15,7 +15,7 @@ router.post("/",checkAuth(Role.SENDER),validateRequest(createParcelZodSchema),Pa
 router.get("/",checkAuth(Role.ADMIN),ParcelController.getAllParcel)
 router.get("/me",checkAuth(Role.SENDER),ParcelController.getMyParcelByEmail)
 router.get("/receiver/incoming",checkAuth(Role.RECEIVER),ParcelController.getReceiverParcels)
-router.patch("/parcelId/confirm", checkAuth(Role.RECEIVER), ParcelController.confirmParcelDelivery)
+router.patch("/:parcelId/confirm", checkAuth(Role.RECEIVER), ParcelController.confirmParcelDelivery)
 router.get("/:parcelId/status-log",ParcelController.getParcelStatusLogs)
 router.patch("/cancel/:parcelId",checkAuth(Role.SENDER,Role.ADMIN),ParcelController.cancelMyParcel)
 router.patch("/:parcelId/status-update",checkAuth(Role.ADMIN),ParcelController.updateParcelStatus)
@@ -25,3 +25,5 @@ router.patch("/:parcelId/status-update",checkAuth(Role.ADMIN),ParcelController.u
 
 
 export const ParcelRoutes = router
+
+

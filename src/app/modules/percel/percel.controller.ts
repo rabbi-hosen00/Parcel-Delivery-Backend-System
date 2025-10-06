@@ -143,20 +143,22 @@ const getReceiverParcels = catchAsync(async (req: Request, res: Response) => {
         statusCode: httpStatus.OK,
         success: true,
         message: "Receiver incoming parcels fetched successfully",
-        data: result
+        meta: result.meta,
+        data: result.parcels
     });
 })
 
 
 const confirmParcelDelivery = catchAsync(async (req: Request, res: Response) => {
-    const parcelId = req.params.id;
+    const parcelId = req.params.parcelId;
+    console.log(parcelId)
     const receiverId = req.user.userId
     const result = await ParcelService.confirmParcelDelivery(parcelId,receiverId)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Receiver incoming parcels fetched successfully",
+        message: "parcel is confirmed successfully by recevier",
         data: result
     });
 })

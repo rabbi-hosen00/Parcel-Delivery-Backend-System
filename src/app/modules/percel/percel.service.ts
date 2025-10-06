@@ -230,14 +230,24 @@ const getIncomingParcelsForReceiver = async (receiverId: string) => {
         .populate("sender", "name email")
         .select("trackingId  type quantity fee status statusLogs  deliveryAddress createdAt");
 
-
-    return parcels;
+    const total = await Parcel.countDocuments({
+        receiver: receiverId, // ✅ শুধুমাত্র ওই receiver-এর parcel গুনবে
+        status: { $in: visibleStatuses }
+    });
+    return {
+        meta: {
+            total
+        },
+        parcels
+    };
 }
 
 
 const confirmParcelDelivery = async (parcelId: string, receiverId: string) => {
 
     const parcel = await Parcel.findById(parcelId);
+   
+    console.log(parcel)
 
     if (!parcel) {
         throw new Error("Parcel not found");
