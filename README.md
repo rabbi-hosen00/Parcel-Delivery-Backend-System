@@ -96,11 +96,11 @@ src/
     └── appError.ts                 # Custom AppError class for error management
 
 
----
+````
 
 ## 🧠 API Design
 
----
+````
 
 | Role | Endpoint | Method | Description |
 |------|-----------|--------|--------------|
@@ -115,7 +115,7 @@ src/
 | Admin | `/api/v1/admin/block/:id` | PATCH | Block or unblock parcels/users |
 | All | `/api/v1/parcels/:id/status-log` | GET | View parcel status logs |
 
----
+````
 
 
 
