@@ -133,6 +133,31 @@ Content-Type: application/json
 
 ````
 
+## Response:
+
+````
+{
+  "success": true,
+  "message": "User registered successfully",
+  "data": {
+    "_id": "68e15ff7f1b8eadaa0dee375",
+    "name": "John Doe",
+    "email": "user@example.com",
+    "role": "sender"
+  }
+}
+````
+2️⃣ Public Route: Login & Get JWT <br>
+Request:
+````
+POST /api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Password123!"
+}
+````
 
 
 ## 🧪 Testing
