@@ -115,7 +115,7 @@ export const cancelParcel = async (parcelId: string, senderId: string) => {
         throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
     }
 
-   
+
     // Step 3: Check forbidden statuses
     const forbiddenStatus = [
         ParcelStatus.DISPATCHED,
@@ -155,60 +155,84 @@ export const cancelParcel = async (parcelId: string, senderId: string) => {
 
 
 const updateParcelStatus = async (parcelId: string, newStatus: ParcelStatus, location: string, adminId: string) => {
-  const parcel = await Parcel.findById(parcelId);
-  if (!parcel) throw new Error("Parcel not found");
+    const parcel = await Parcel.findById(parcelId);
+    if (!parcel) throw new Error("Parcel not found");
 
-  if (parcel.status === newStatus) {
-    throw new Error(`Parcel is already in status: ${newStatus}`);
-  }
-
-
-  parcel.status = newStatus;
+    if (parcel.status === newStatus) {
+        throw new Error(`Parcel is already in status: ${newStatus}`);
+    }
 
 
-  const newStatusLog = await StatusLogs.create({
-    status: newStatus,
-    location: location,
-    note: `Status updated to ${newStatus} by admin`,
-    updatedBy: adminId,
-  });
+    parcel.status = newStatus;
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  parcel.statusLogs!.push(newStatusLog._id);
 
-  await parcel.save();
+    const newStatusLog = await StatusLogs.create({
+        status: newStatus,
+        location: location,
+        note: `Status updated to ${newStatus} by admin`,
+        updatedBy: adminId,
+    });
 
-  return {
-    trackingId: parcel.trackingId,
-    newStatus: parcel.status,
-    location: location,
-    message: `Parcel status updated to ${newStatus}`,
-  };
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    parcel.statusLogs!.push(newStatusLog._id);
+
+    await parcel.save();
+
+    return {
+        trackingId: parcel.trackingId,
+        newStatus: parcel.status,
+        location: location,
+        message: `Parcel status updated to ${newStatus}`,
+    };
 };
 
 
 const getParcelStatusLogs = async (parcelId: string) => {
-  
-  const parcel = await Parcel.findById(parcelId)
-    .populate({
-      path: "statusLogs",
-      select: "status note location updatedBy createdAt -_id", // শুধু দরকারি ফিল্ড দেখাবে
-      populate: {
-        path: "updatedBy",
-        select: "name role", 
-      },
-    })
-    .select("trackingId status statusLogs");
+
+    const parcel = await Parcel.findById(parcelId)
+        .populate({
+            path: "statusLogs",
+            select: "status note location updatedBy createdAt -_id", // শুধু দরকারি ফিল্ড দেখাবে
+            populate: {
+                path: "updatedBy",
+                select: "name role",
+            },
+        })
+        .select("trackingId status statusLogs");
 
 
-  return {
-    trackingId: parcel!.trackingId,
-    currentStatus: parcel!.status,
-    statusLogs: parcel!.statusLogs,
-  };
+    return {
+        trackingId: parcel!.trackingId,
+        currentStatus: parcel!.status,
+        statusLogs: parcel!.statusLogs,
+    };
 };
 
 
+
+const getIncomingParcelsForReceiver = async (receiverId: string) => {
+
+    const visibleStatuses = [
+        "APPROVED",
+        "DISPATCHED",
+        "IN_TRANSIT",
+        "OUT_FOR_DELIVERY",
+        "DELIVERED",
+        "RETURNED",
+        "HELD",
+    ];
+
+
+    const parcels = await Parcel.find({
+        receiver: receiverId,
+        status: { $in: visibleStatuses }
+    })
+      .populate("sender", "name email")
+      .select("trackingId status sender deliveryAddress createdAt");
+
+
+      return parcels;
+}
 
 
 
@@ -219,7 +243,8 @@ export const ParcelService = {
     cancelParcel,
     getAllParcel,
     updateParcelStatus,
-    getParcelStatusLogs
+    getParcelStatusLogs,
+    getIncomingParcelsForReceiver
 }
 
 
