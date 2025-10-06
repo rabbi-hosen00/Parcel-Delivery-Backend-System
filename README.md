@@ -157,29 +157,6 @@ BCRYPT_SALT_ROUNDS=10
 npm run dev
 ```
 
----
-
-## 📊 Evaluation Rubric (60 Marks)
-
-| Criteria | Marks |
-|-----------|-------|
-| Authentication (JWT + bcrypt) | 5 |
-| Role-Based Authorization | 5 |
-| Sender/Receiver Logic + Validation | 10 |
-| Parcel & Status Design | 10 |
-| Tracking + Filtering | 10 |
-| Code Structure + Error Handling | 5 |
-| Creativity + Thoughtful Design | 5 |
-| README + API Testing + Video | 10 |
-| **Total** | **60 Marks** |
-
----
-
-## 🧠 Bonus Features (Optional)
-- Tracking lookup by tracking ID  
-- Fee calculation by distance or weight  
-- Admin dashboard integration  
-- Real-time notification system  
 
 ---
 
