@@ -98,8 +98,6 @@ src/
 
 ---
 
----
-
 ## 🧠 API Design
 
 | Role | Endpoint | Method | Description |
