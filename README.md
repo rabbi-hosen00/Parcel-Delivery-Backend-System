@@ -105,6 +105,15 @@ src/
 
 ## 🧠 API Design
 
+### Live URL
+```
+https://assignment-ride-booking-api-1.onrender.com/api/v1
+```
+
+### Base URL
+```
+http://localhost:5000/api/v1
+```
 
 
 | Role      | Endpoint                          | Method | Description                          |
