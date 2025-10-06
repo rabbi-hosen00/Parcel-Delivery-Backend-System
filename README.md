@@ -102,18 +102,19 @@ src/
 
 ````
 
-| Role | Endpoint | Method | Description |
-|------|-----------|--------|--------------|
-| Public | `/api/v1/auth/register` | POST | Register as sender/receiver |
-| Public | `/api/v1/auth/login` | POST | Login to get JWT token |
-| Sender | `/api/v1/parcels` | POST | Create a new parcel |
-| Sender | `/api/v1/parcels/me` | GET | View sender’s parcels |
-| Sender | `/api/v1/parcels/cancel/:id` | PATCH | Cancel parcel if not dispatched |
-| Receiver | `/api/v1/parcels/receiver` | GET | View incoming parcels |
-| Receiver | `/api/v1/parcels/confirm/:id` | PATCH | Confirm delivery |
-| Admin | `/api/v1/admin/parcels` | GET | View all parcels |
-| Admin | `/api/v1/admin/block/:id` | PATCH | Block or unblock parcels/users |
-| All | `/api/v1/parcels/:id/status-log` | GET | View parcel status logs |
+| Role      | Endpoint                          | Method | Description                          |
+|-----------|----------------------------------|--------|--------------------------------------|
+| Public    | `/api/v1/auth/register`           | POST   | Register as sender/receiver          |
+| Public    | `/api/v1/auth/login`              | POST   | Login to get JWT token               |
+| Sender    | `/api/v1/parcels`                 | POST   | Create a new parcel                  |
+| Sender    | `/api/v1/parcels/me`              | GET    | View sender’s parcels                |
+| Sender    | `/api/v1/parcels/cancel/:id`     | PATCH  | Cancel parcel if not dispatched      |
+| Receiver  | `/api/v1/parcels/receiver`        | GET    | View incoming parcels                |
+| Receiver  | `/api/v1/parcels/confirm/:id`     | PATCH  | Confirm delivery                     |
+| Admin     | `/api/v1/admin/parcels`           | GET    | View all parcels                     |
+| Admin     | `/api/v1/admin/block/:id`         | PATCH  | Block or unblock parcels/users       |
+| All       | `/api/v1/parcels/:id/status-log`  | GET    | View parcel status logs              |
+
 
 ````
 
