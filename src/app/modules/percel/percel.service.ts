@@ -287,21 +287,74 @@ const confirmParcelDelivery = async (parcelId: string, receiverId: string) => {
 
 
 
-const getReceiverDeliveryHistory = async (receiverId: string) => {
-    const history = await Parcel.find({
-        receiver: receiverId,
-        status: {
-            $in: [
-                ParcelStatus.DELIVERED,
-                ParcelStatus.RETURNED,
-                ParcelStatus.CANCELLED
-            ]
-        },
-    })
-        .populate("sender", "name email") // sender info
-        .select("trackingId type fee status deliveryAddress updatedAt"); // selected fields only
+// const getReceiverDeliveryHistory = async (receiverId: string) => {
+//     const history = await Parcel.find({
+//         receiver: receiverId,
+//         status: {
+//             $in: [
+//                 ParcelStatus.DELIVERED,
+//                 ParcelStatus.RETURNED,
+//                 ParcelStatus.CANCELLED
+//             ]
+//         },
+//     })
+//         .populate("sender", "name email") // sender info
+//         .select("trackingId type fee status deliveryAddress updatedAt"); // selected fields only
+        
+       
 
-    return history;
+//     return history;
+// };
+
+
+const getReceiverDeliveryHistory = async (receiverId: string) => {
+  try {
+    const history = await Parcel.find({
+      receiver: receiverId,
+      status: {
+        $in: [
+          ParcelStatus.DELIVERED,
+          ParcelStatus.RETURNED,
+          ParcelStatus.CANCELLED,
+        ],
+      },
+    })
+      .populate("sender", "name email")
+      .select("trackingId type fee status deliveryAddress updatedAt");
+
+    const total = await Parcel.countDocuments({
+      receiver: receiverId,
+      status: {
+        $in: [
+          ParcelStatus.DELIVERED,
+          ParcelStatus.RETURNED,
+          ParcelStatus.CANCELLED,
+        ],
+      },
+    });
+
+    if (!history || history.length === 0) {
+      return {
+        success: false,
+        message: "No delivery history found for this receiver",
+        data: [],
+        meta: { total: 0 },
+      };
+    }
+
+    // Step 4: Return success
+    return {
+      success: true,
+      message: "Receiver delivery history fetched successfully",
+      data: history,
+      meta: {
+        total: total,
+      },
+    };
+  } catch (error: any) {
+    // Step 5: Error handling
+    throw new Error(`Error fetching delivery history: ${error.message}`);
+  }
 };
 
 

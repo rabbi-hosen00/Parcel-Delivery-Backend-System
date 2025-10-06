@@ -172,7 +172,8 @@ const getDeliveryHistory = catchAsync(async (req: Request, res: Response) => {
         statusCode: httpStatus.OK,
         success: true,
         message:  "Receiver delivery history fetched successfully",
-        data: result
+        meta: result.meta,
+        data: result.data
     });
 })
 
