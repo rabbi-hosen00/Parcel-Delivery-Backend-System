@@ -151,7 +151,6 @@ const getReceiverParcels = catchAsync(async (req: Request, res: Response) => {
 
 const confirmParcelDelivery = catchAsync(async (req: Request, res: Response) => {
     const parcelId = req.params.parcelId;
-    console.log(parcelId)
     const receiverId = req.user.userId
     const result = await ParcelService.confirmParcelDelivery(parcelId,receiverId)
 
@@ -165,6 +164,19 @@ const confirmParcelDelivery = catchAsync(async (req: Request, res: Response) => 
 
 
 
+const getDeliveryHistory = catchAsync(async (req: Request, res: Response) => {
+    const receiverId = req.user.userId
+    const result = await ParcelService.getReceiverDeliveryHistory(receiverId)
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message:  "Receiver delivery history fetched successfully",
+        data: result
+    });
+})
+
+
 
 
 export const ParcelController = {
@@ -175,6 +187,7 @@ export const ParcelController = {
     updateParcelStatus,
     getParcelStatusLogs,
     getReceiverParcels,
-    confirmParcelDelivery
+    confirmParcelDelivery,
+    getDeliveryHistory
 }
 

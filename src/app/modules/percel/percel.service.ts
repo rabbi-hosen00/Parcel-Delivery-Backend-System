@@ -246,7 +246,7 @@ const getIncomingParcelsForReceiver = async (receiverId: string) => {
 const confirmParcelDelivery = async (parcelId: string, receiverId: string) => {
 
     const parcel = await Parcel.findById(parcelId);
-   
+
     console.log(parcel)
 
     if (!parcel) {
@@ -287,6 +287,23 @@ const confirmParcelDelivery = async (parcelId: string, receiverId: string) => {
 
 
 
+const getReceiverDeliveryHistory = async (receiverId: string) => {
+    const history = await Parcel.find({
+        receiver: receiverId,
+        status: {
+            $in: [
+                ParcelStatus.DELIVERED,
+                ParcelStatus.RETURNED,
+                ParcelStatus.CANCELLED
+            ]
+        },
+    })
+        .populate("sender", "name email") // sender info
+        .select("trackingId type fee status deliveryAddress updatedAt"); // selected fields only
+
+    return history;
+};
+
 
 
 export const ParcelService = {
@@ -297,7 +314,8 @@ export const ParcelService = {
     updateParcelStatus,
     getParcelStatusLogs,
     getIncomingParcelsForReceiver,
-    confirmParcelDelivery
+    confirmParcelDelivery,
+    getReceiverDeliveryHistory
 }
 
 
