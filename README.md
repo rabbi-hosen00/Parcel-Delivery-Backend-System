@@ -117,7 +117,7 @@ src/
 
 
 ### 🔹 Example Requests & Outputs </br>
-#  1️⃣ Public Route: Register
+##  1️⃣ Public Route: Register
 Request:
 
 ````
