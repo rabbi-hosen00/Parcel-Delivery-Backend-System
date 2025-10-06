@@ -228,7 +228,7 @@ const getIncomingParcelsForReceiver = async (receiverId: string) => {
         status: { $in: visibleStatuses }
     })
       .populate("sender", "name email")
-      .select("trackingId status sender deliveryAddress createdAt");
+      .select("trackingId  type quantity fee status statusLogs  deliveryAddress createdAt");
 
 
       return parcels;

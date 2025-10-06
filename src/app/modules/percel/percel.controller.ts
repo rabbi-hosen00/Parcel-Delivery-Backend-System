@@ -134,8 +134,9 @@ const  getParcelStatusLogs = catchAsync(async (req: Request, res: Response) => {
 
 
 const  getReceiverParcels = catchAsync(async (req: Request, res: Response) => {
-      const receiverId = req.user._id;
-  
+      const receiverId = req.user.userId
+      const email = req.user.email;
+      console.log(receiverId,email)
     const result= await ParcelService.getIncomingParcelsForReceiver(receiverId)
 
     sendResponse(res, {
