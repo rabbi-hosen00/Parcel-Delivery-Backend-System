@@ -116,6 +116,23 @@ src/
 | All       | `/api/v1/parcels/:id/status-log`  | GET    | View parcel status logs              |
 
 
+🔹 Example Requests & Outputs
+1️⃣ Public Route: Register
+Request:
+
+````
+POST /api/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "user@example.com",
+  "password": "Password123!",
+  "role": "sender"
+}
+
+````
+
 
 
 ## 🧪 Testing
