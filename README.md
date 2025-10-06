@@ -4,6 +4,11 @@
 The **Parcel Delivery Backend System** is a secure, modular, and role-based backend API built with **Express.js**, **TypeScript**, and **Mongoose**. It manages parcel deliveries, tracks their statuses, and controls user roles like `admin`, `sender`, and `receiver`.  
 Inspired by courier systems like **Pathao** and **Sundarban**, this project focuses on authentication, authorization, and efficient parcel management.
 
+## Demo Video
+
+[Play Video Ride Booking API](https://drive.google.com/file/d/1cRPbWJx8aw_4RI1IWcWiRZt-EaUHe4dz/preview)
+
+
 ---
 
 ## 🧱 Tech Stack
