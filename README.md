@@ -116,7 +116,7 @@ src/
 | All       | `/api/v1/parcels/:id/status-log`  | GET    | View parcel status logs              |
 
 
-🔹 Example Requests & Outputs
+🔹 Example Requests & Outputs </br>
 1️⃣ Public Route: Register
 Request:
 
