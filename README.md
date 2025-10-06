@@ -100,6 +100,8 @@ src/
 
 ## 🧠 API Design
 
+---
+
 | Role | Endpoint | Method | Description |
 |------|-----------|--------|--------------|
 | Public | `/api/v1/auth/register` | POST | Register as sender/receiver |
