@@ -106,22 +106,22 @@ const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
     const { status, location } = req.body;
     const adminId = req.user._id;
 
-    const result= await ParcelService.updateParcelStatus(parcelId, status, location, adminId)
+    const result = await ParcelService.updateParcelStatus(parcelId, status, location, adminId)
 
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message:  result.message,
+        message: result.message,
         data: result
     });
 })
 
 
 
-const  getParcelStatusLogs = catchAsync(async (req: Request, res: Response) => {
+const getParcelStatusLogs = catchAsync(async (req: Request, res: Response) => {
     const { parcelId } = req.params;
-  
-    const result= await ParcelService.getParcelStatusLogs(parcelId)
+
+    const result = await ParcelService.getParcelStatusLogs(parcelId)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -133,11 +133,25 @@ const  getParcelStatusLogs = catchAsync(async (req: Request, res: Response) => {
 
 
 
-const  getReceiverParcels = catchAsync(async (req: Request, res: Response) => {
-      const receiverId = req.user.userId
-      const email = req.user.email;
-      console.log(receiverId,email)
-    const result= await ParcelService.getIncomingParcelsForReceiver(receiverId)
+const getReceiverParcels = catchAsync(async (req: Request, res: Response) => {
+    const receiverId = req.user.userId
+    const email = req.user.email;
+    console.log(receiverId, email)
+    const result = await ParcelService.getIncomingParcelsForReceiver(receiverId)
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Receiver incoming parcels fetched successfully",
+        data: result
+    });
+})
+
+
+const confirmParcelDelivery = catchAsync(async (req: Request, res: Response) => {
+    const parcelId = req.params.id;
+    const receiverId = req.user.userId
+    const result = await ParcelService.confirmParcelDelivery(parcelId,receiverId)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -151,8 +165,6 @@ const  getReceiverParcels = catchAsync(async (req: Request, res: Response) => {
 
 
 
-
-
 export const ParcelController = {
     createPercel,
     getMyParcelByEmail,
@@ -160,6 +172,7 @@ export const ParcelController = {
     getAllParcel,
     updateParcelStatus,
     getParcelStatusLogs,
-    getReceiverParcels
+    getReceiverParcels,
+    confirmParcelDelivery
 }
 

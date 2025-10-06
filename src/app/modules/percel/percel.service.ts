@@ -227,12 +227,54 @@ const getIncomingParcelsForReceiver = async (receiverId: string) => {
         receiver: receiverId,
         status: { $in: visibleStatuses }
     })
-      .populate("sender", "name email")
-      .select("trackingId  type quantity fee status statusLogs  deliveryAddress createdAt");
+        .populate("sender", "name email")
+        .select("trackingId  type quantity fee status statusLogs  deliveryAddress createdAt");
 
 
-      return parcels;
+    return parcels;
 }
+
+
+const confirmParcelDelivery = async (parcelId: string, receiverId: string) => {
+
+    const parcel = await Parcel.findById(parcelId);
+
+    if (!parcel) {
+        throw new Error("Parcel not found");
+    }
+    if (parcel.receiver.toString() !== receiverId) {
+        throw new Error("You are not authorized to confirm this parcel");
+    }
+    if (parcel.status === "DELIVERED") {
+        throw new Error("The parcel is already confirmed by the receiver")
+    }
+
+    if (
+        [ParcelStatus.BLOCKED, ParcelStatus.CANCELLED, ParcelStatus.RETURNED].includes(parcel.status)
+    ) {
+        throw new Error(`Parcel cannot be confirmed because its status is ${parcel.status}`);
+    }
+
+    const statusLog = await StatusLogs.create({
+        status: ParcelStatus.DELIVERED,
+        note: "Receiver confirmed delivery",
+        updatedBy: receiverId,
+        location: parcel.deliveryAddress,
+    });
+
+    // update parcel status and push statusLog
+    parcel.status = ParcelStatus.DELIVERED;
+    parcel.statusLogs!.push(statusLog._id);
+    await parcel.save();
+
+    return {
+        trackingId: parcel.trackingId,
+        status: parcel.status,
+        lastStatusLog: statusLog,
+    };
+
+}
+
 
 
 
@@ -244,7 +286,8 @@ export const ParcelService = {
     getAllParcel,
     updateParcelStatus,
     getParcelStatusLogs,
-    getIncomingParcelsForReceiver
+    getIncomingParcelsForReceiver,
+    confirmParcelDelivery
 }
 
 
